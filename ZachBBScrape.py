@@ -32,7 +32,7 @@ while day <= 365:
         #For each song we put the appropriate values into the set and array
         songSet.add((currTitle, currArtist))
         songArray.append((currTitle, currArtist, currRank, currWeeks, currPeakpos, date))
-        songNum =+ 1
+        songNum += 1
 
     #Put our date to a day back then update our chart object to the new date
     date = chart100.previousDate
