@@ -5,7 +5,7 @@ import json
 import pandas as pd
 # import top_100 from Jons_Script
 
-api_token = "BQBcGIyFE-zGL7H3-KlhRTrFX83dYbIk3Pc_zeoraZmqs_MgXNmttl8c2DxXAa9E0QsQnl2GyJFCjaKdkYMiScjj9ZPfNb7RumC-ufNFS59ur6nyG3QqLlM_CZ5YJw0Z9JhkyQioUk5_SWCnKy7jrURpbPrbne3Znp4"
+api_token = "BQBsTSsG8XucVb3wgXhKZDzsB-OhfjUrYFs_EcX0wDIL-5H8B3RQkc36xOyaApRkI2g9wDU8uw41HbXVIyutE7x0zRTSBLY4TKiJfPe9ticBa_M6Q3p0az5QJcwNZiR6JSk9clT4vDcrTn2ccgkNJmIb_oJD-hSrltE"
 
 # How to get information for a SINGLE song
 def getAudioFeatures(track_Id, api_token): 
@@ -45,22 +45,24 @@ def getDataframeForSingleSong(df, index, api_token):
 		df_individual = getAudioFeatures(trackId, api_token)
 		df_individual['song_title'] = name
 		df_individual['artist_name'] = artist
+		df_individual['PeakPos'] = df.get_value(index, "PeakPos")
 		return df_individual
 	else: 
 		return None
 
 # Main
-unique_songs = pd.read_csv('Unique_Song_list_1year.csv')
+unique_songs = pd.read_csv('uniqe_song_peakPos.csv')
+
 size = len(unique_songs.index)
 
 
 df_final = getDataframeForSingleSong(unique_songs, 0, api_token)
 
-for x in range(2, size):
+for x in range(1, size):
 	df_individual = getDataframeForSingleSong(unique_songs, x, api_token)
 	if df_individual is None: 
 		pass
 	else: 
 		df_final = df_final.append(df_individual)
 
-df_final.to_csv("spotify_data.csv")
+df_final.to_csv("spotify_data_final.csv")
