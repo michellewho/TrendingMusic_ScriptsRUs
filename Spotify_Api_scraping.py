@@ -5,7 +5,7 @@ import json
 import pandas as pd
 # import top_100 from Jons_Script
 
-api_token = "BQC0YsKaf6GZMMn0VVgblCWK5Pw5P0fXU3o5KAVtN3EYu_iUuuvEvS3yaPQOWFu9A4RmQCtpXiA3ZGmwslBeZGYnxjP0usuZ7U-jkEWFFpQ4F-GTdm1eZCQp1Sl2vbv6ob9X6yeQufXW0jpS_j4Zt4rnyhn0xevr7vQ"
+api_token = "BQBcGIyFE-zGL7H3-KlhRTrFX83dYbIk3Pc_zeoraZmqs_MgXNmttl8c2DxXAa9E0QsQnl2GyJFCjaKdkYMiScjj9ZPfNb7RumC-ufNFS59ur6nyG3QqLlM_CZ5YJw0Z9JhkyQioUk5_SWCnKy7jrURpbPrbne3Znp4"
 
 # How to get information for a SINGLE song
 def getAudioFeatures(track_Id, api_token): 
@@ -16,9 +16,9 @@ def getAudioFeatures(track_Id, api_token):
 	return song_df
 
 # How to get trackId for a song
-def getTrackId(song_title, artist, api_token):
+def getTrackId(song_title, api_token):
 	api_url_base = "https://api.spotify.com/v1/search"
-	query_params = "?q=" + song_title + "," + artist + "&type=track,artist&market=US&limit=1"
+	query_params = "?q=" + song_title + "&type=track&market=US&limit=1"
 	headers = {'Content-type': 'application/json',
 				'Authorization': 'Bearer {0}'.format(api_token)}
 	response = requests.get(api_url_base + query_params, headers = headers)
@@ -40,7 +40,7 @@ def getDataframeForSingleSong(df, index, api_token):
 	name_altered = name.replace(" ", "+")
 	artist = df.get_value(index, "Artist")
 	artist_altered = artist.replace(" ", "+")
-	trackId = getTrackId(name_altered, artist_altered, api_token)
+	trackId = getTrackId(name_altered, api_token)
 	if trackId != None: 
 		df_individual = getAudioFeatures(trackId, api_token)
 		df_individual['song_title'] = name
@@ -50,12 +50,13 @@ def getDataframeForSingleSong(df, index, api_token):
 		return None
 
 # Main
-unique_songs = pd.read_csv('Unique_song_list.csv')
+unique_songs = pd.read_csv('Unique_Song_list_1year.csv')
 size = len(unique_songs.index)
+
 
 df_final = getDataframeForSingleSong(unique_songs, 0, api_token)
 
-for x in range(1, size):
+for x in range(2, size):
 	df_individual = getDataframeForSingleSong(unique_songs, x, api_token)
 	if df_individual is None: 
 		pass
