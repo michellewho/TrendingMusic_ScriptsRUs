@@ -18,7 +18,7 @@ songSet = set()
 
 #initiate while loop (counting up days)
 day = 0
-while day <= 365: 
+while day <= 52: 
     songNum = 0
     while songNum < 100:
         
@@ -41,11 +41,11 @@ while day <= 365:
 
 #Create the dataframe for the general billboard and put it into a csv
 songDF = pd.DataFrame(songArray, columns = columnList)
-songDF.to_csv('Billboard_data.csv', index=False, encoding='utf-8')
+songDF.to_csv('Billboard_data_1year.csv', index=False, encoding='utf-8')
 
 #put each object in set into an array, use this array to create df then csv
 uniqueSongArray = []
 for obj in songSet:
     uniqueSongArray.append(obj)
 uniqueSongDF = pd.DataFrame(uniqueSongArray, columns=("SongTitle", "Artist"))
-uniqueSongDF.to_csv('Unique_Song_list.csv', index=False, encoding='utf-8')
+uniqueSongDF.to_csv('Unique_Song_list_1year.csv', index=False, encoding='utf-8')
