@@ -45,20 +45,20 @@ valence  = song_data["valence"]
 
 
 danceabilityData = go.Scatter(
-    x=peakPos,
-    y=danceability,
+    y=peakPos,
+    x=danceability,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Danceability ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Danceability',
         titlefont=dict(
             size=18,
@@ -70,20 +70,20 @@ danceabilityFig = go.Figure(data=[danceabilityData], layout=layout)
 py.plot(danceabilityFig, filename='danceabilityscatter')
 
 acousticnessData = go.Scatter(
-    x = peakPos,
-    y = acousticness,
+    y = peakPos,
+    x = acousticness,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Acousticness ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Acousticness',
         titlefont=dict(
             size=18,
@@ -95,20 +95,20 @@ acousticnessFig = go.Figure(data=[acousticnessData], layout=layout)
 py.plot(acousticnessFig, filename='acousticnessscatter')
 
 duration_msData = go.Scatter(
-    x = peakPos,
-    y = duration_ms,
+    y = peakPos,
+    x = duration_ms,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Duration ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Duration (ms)',
         titlefont=dict(
             size=18,
@@ -120,20 +120,20 @@ duration_msFig = go.Figure(data=[duration_msData], layout=layout)
 py.plot(duration_msFig, filename='durationmsscatter')
 
 energyData = go.Scatter(
-    x = peakPos,
-    y = energy,
+    y = peakPos,
+    x = energy,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Energy ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Energy',
         titlefont=dict(
             size=18,
@@ -145,20 +145,20 @@ energyFig = go.Figure(data=[energyData], layout=layout)
 py.plot(energyFig, filename='energyscatter')
 
 instrumentalnessData = go.Scatter(
-    x = peakPos,
-    y = instrumentalness,
+    y = peakPos,
+    x = instrumentalness,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Instrumentalness ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Instrumentalness',
         titlefont=dict(
             size=18,
@@ -170,20 +170,20 @@ instrumentalnessFig = go.Figure(data=[instrumentalnessData], layout=layout)
 py.plot(instrumentalnessFig, filename='instrumentalnessscatter')
 
 livenessData = go.Scatter(
-    x = peakPos,
-    y = liveness,
+    y = peakPos,
+    x = liveness,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Liveness ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Liveness',
         titlefont=dict(
             size=18,
@@ -195,20 +195,20 @@ livenessFig = go.Figure(data=[livenessData], layout=layout)
 py.plot(livenessFig, filename='livenessscatter')
 
 loudnessData = go.Scatter(
-    x = peakPos,
-    y = loudness,
+    y = peakPos,
+    x = loudness,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Loudness ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Loudness',
         titlefont=dict(
             size=18,
@@ -220,20 +220,20 @@ loudnessFig = go.Figure(data=[loudnessData], layout=layout)
 py.plot(loudnessFig, filename='loudnessscatter')
 
 speechinessData = go.Scatter(
-    x = peakPos,
-    y = speechiness,
+    y = peakPos,
+    x = speechiness,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Speechiness ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Speechiness',
         titlefont=dict(
             size=18,
@@ -245,20 +245,20 @@ speechinessFig = go.Figure(data=[speechinessData], layout=layout)
 py.plot(speechinessFig, filename='speechinessscatter')
 
 tempoData = go.Scatter(
-    x = peakPos,
-    y = tempo,
+    y = peakPos,
+    x = tempo,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Tempo ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    Xaxis=dict(
         title='Tempo',
         titlefont=dict(
             size=18,
@@ -270,20 +270,20 @@ tempoFig = go.Figure(data=[tempoData], layout=layout)
 py.plot(tempoFig, filename='temposcatter')
 
 time_signatureData = go.Scatter(
-    x = peakPos,
-    y = time_signature,
+    y = peakPos,
+    x = time_signature,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Time Signature ScatterPlot',
-    xaxis=dict(
+    yxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Time Signature',
         titlefont=dict(
             size=18,
@@ -295,20 +295,20 @@ time_signatureFig = go.Figure(data=[time_signatureData], layout=layout)
 py.plot(time_signatureFig, filename='timesigscatter')
 
 valenceData = go.Scatter(
-    x = peakPos,
-    y = valence,
+    y = peakPos,
+    x = valence,
     mode = 'markers'
 )
 layout = go.Layout(
     title='Valence ScatterPlot',
-    xaxis=dict(
+    yaxis=dict(
         title='Peak Position',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
         )
     ),
-    yaxis=dict(
+    xaxis=dict(
         title='Valence',
         titlefont=dict(
             size=18,
