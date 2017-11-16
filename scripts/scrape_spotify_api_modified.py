@@ -64,7 +64,7 @@ def getDataframeForSingleSong(df, index, api_token):
 	artist = df.get_value(index, "Artist")
 	artist_altered = artist.replace(" ", "+")
 	myList = getTrackId(name_altered, api_token)
-	if myList[0] == None:
+	if myList[0] is None:
 		return None
 	trackId = myList[0]
 	artistId = myList[1]
