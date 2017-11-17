@@ -5,7 +5,9 @@ import json
 import pandas as pd
 # import top_100 from Jons_Script
 
-api_token = "BQA2QCZpgezsHCAs1C6WqAj4_G9a-M8MOUg1jlj8RwMOeT7EFiWY8glG9vRjwmYtBldcwwEL6ltnITEHB3WuAFsEgMZbjqUHD1fu3XSeSI9ew7W4G7UMQcVyEVL7Sehl6v_Ft6dSXb_XcQoNhieFRU_tDwdoJM-wrmI"
+# api_token = "BQA2QCZpgezsHCAs1C6WqAj4_G9a-M8MOUg1jlj8RwMOeT7EFiWY8glG9vRjwmYtBldcwwEL6ltnITEHB3WuAFsEgMZbjqUHD1fu3XSeSI9ew7W4G7UMQcVyEVL7Sehl6v_Ft6dSXb_XcQoNhieFRU_tDwdoJM-wrmI"
+api_token = "BQDL-5kg2JjeBWij8d1jvQ4E3Y6HaGfGRrJ_14-_QLlHw9rUVxF0_Y61G2gQsa5AyEWGekpcAbf1vlNod8YJZFIHhIAKwqH-h-IS1uNSkR45LM6xNBUd-RbJMzLeBoSTnwEa79r2ryBODgU"
+
 
 # How to get information for a SINGLE song
 def getAudioFeatures(track_Id, api_token): 
@@ -61,30 +63,30 @@ def getPopularityOrFollowers(artist_id, api_token, isPopularity):
 def getDataframeForSingleSong(df, index, api_token):
 	name = df.get_value(index, "SongTitle")
 	name_altered = name.replace(" ", "+")
-	artist = df.get_value(index, "Artist")
+	artist = df.get_value(index, "Title")
 	artist_altered = artist.replace(" ", "+")
 	myList = getTrackId(name_altered, api_token)
-	if myList[0] is None:
-		return None
-	trackId = myList[0]
-	artistId = myList[1]
-	if trackId != None and artistId != None: 
-		df_individual = getAudioFeatures(trackId, api_token)
-		popularity = getPopularityOrFollowers(artistId, api_token, True)
-		df_individual['song_title'] = name
-		df_individual['artist_name'] = artist
-		df_individual['PeakPos'] = df.get_value(index, "PeakPos")
-		df_individual['Popularity'] = popularity
-		df_individual["Followers"] = getPopularityOrFollowers(artistId, api_token, False)
-		return df_individual
+	if (myList[0]) is not None:
+		trackId = myList[0]
+		artistId = myList[1]
+		if trackId != None and artistId != None: 
+			df_individual = getAudioFeatures(trackId, api_token)
+			popularity = getPopularityOrFollowers(artistId, api_token, True)
+			df_individual['song_title'] = name
+			df_individual['artist_name'] = artist
+			df_individual['PeakPos'] = df.get_value(index, "PeakPos")
+			df_individual['Popularity'] = popularity
+			df_individual["Followers"] = getPopularityOrFollowers(artistId, api_token, False)
+			return df_individual
+		else: 
+			return None
 	else: 
 		return None
 
 # Main
-unique_songs = pd.read_csv('unique_songs_6year.csv')
+unique_songs = pd.read_csv('../data/unique_song_peakPos_6yr.csv')
 
 size = len(unique_songs.index)
-
 
 df_final = getDataframeForSingleSong(unique_songs, 0, api_token)
 
@@ -95,4 +97,4 @@ for x in range(1, size):
 	else: 
 		df_final = df_final.append(df_individual)
 
-df_final.to_csv("spotify_data_final.csv")
+df_final.to_csv("../data/spotify_data_final.csv")
