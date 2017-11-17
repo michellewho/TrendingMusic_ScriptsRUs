@@ -6,7 +6,7 @@ import pandas as pd
 # import top_100 from Jons_Script
 
 #replace token
-api_token = "BQBDHiVkjBmxeflcoli5TnhJDJMtZMB4D75ewqY9EuN27pQA8ITbxgAu2LofDozNpb1oH_tA_mTENcgPQTHRi6iq31f_rP4HQGWg6lTtXcXmSDbV-SNzilQAyogayxNsGk0d_Bpwy9QkJy4"
+api_token = "BQBoVdye4IBkDBeNNAUVW0euTdCOxUBKq0qGfRXmJVY3B3jtQEgvHT3U2r7K31TXHHlBRMoPmi2RoYIpWr_oKoy4Q9ayDO4bTXdk1Qh-9PMK23RJEzFqMrAK6cQN-6aVmtEvoNpJnokTVNMJ6NrM3ROuZBalHZKTphk"
 
 
 # How to get information for a SINGLE song
@@ -63,10 +63,9 @@ def getPopularityOrFollowers(artist_id, api_token, isPopularity):
 def getDataframeForSingleSong(df, index, api_token):
 	name = df.get_value(index, "SongTitle")
 	name_altered = name.replace(" ", "+")
-	artist = df.get_value(index, "Title")
+	artist = df.get_value(index, "Artist")
 	artist_altered = artist.replace(" ", "+")
 	myList = getTrackId(name_altered, api_token)
-	print(myList)
 	if myList is not None:
 		trackId = myList[0]
 		artistId = myList[1]
@@ -85,7 +84,8 @@ def getDataframeForSingleSong(df, index, api_token):
 		return None
 
 # Main
-unique_songs = pd.read_csv('../data/unique_song_peakPos_6yr.csv')
+#unique_songs = pd.read_csv('unique_song_peakPos_6yr.csv')
+unique_songs = pd.read_csv('foobar.csv')
 
 size = len(unique_songs.index)
 
@@ -98,7 +98,7 @@ for x in range(1, size):
 	else: 
 		pass
 
-df_final.to_csv("../data/spotify_data_final.csv")
+df_final.to_csv("spotify_data_final.csv")
 
 
 
