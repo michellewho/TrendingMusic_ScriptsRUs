@@ -1,5 +1,5 @@
 # Assignment 3 Mini Data Science Project
-# Exploratory data analysis file (For question one and question 2)
+# Exploratory data analysis file (For question 1 and question 2)
 
 library(dplyr)
 setwd("~/Desktop/INFO370")
@@ -7,38 +7,28 @@ cleanStravaData <- read.csv("ALKAN_HOLLE_INFO370_a3_cleanData_q1.csv")
 
 # Problem 1: Do men tend to exercise more intensely (taking into account both distance and speed) than women?
 
-# Select only the types of exercise that is done by both males and femaels -------> Check and make sure each category has more than X entires? 
-cleanStravaData <- filter(cleanStravaData, type %in% c('AlpineSki', 'BackcountrySki', 'Crossfit', 'Hike', 'Kayaking', 'NordicSki', 
-                                                       'Ride', 'Run', 'Snowboarding', 'Swim', 'VirtualRide', 'Walk', 'Workout'))
-#View(cleanStravaData)
-
-#Create a dataset of only ride & run because of the lack of volume of data for other activities
-rideAndRunStravaData <- cleanStravaData %>%
-  filter(type %in% c('Run', 'Ride'))
-#View(rideAndRunStravaData)
-
 # Isolate different subsets for exploratory plotting
 
 #Create mens riding dataframe
-menRide <- rideAndRunStravaData %>%
+menRide <- cleanStravaData %>%
   filter(type == 'Ride', athlete.sex == 'M') %>%
   select(average_speed, distance, total_elevation_gain)
 #View(menRide)
 
 #Create mens running dataframe
-menRun <- rideAndRunStravaData %>%
+menRun <- cleanStravaData %>%
   filter(type == 'Run', athlete.sex == 'M')%>%
   select(average_speed, distance, total_elevation_gain)
 #View(menRun)
 
 #Create womens riding dataframe
-womenRide <- rideAndRunStravaData %>%
+womenRide <- cleanStravaData %>%
   filter(type == 'Ride', athlete.sex == 'F')%>%
   select(average_speed, distance, total_elevation_gain)
 #View(womenRide)
 
 #Create womens rnning dataframe
-womenRun <- rideAndRunStravaData %>%
+womenRun <- cleanStravaData %>%
   filter(type == 'Run', athlete.sex == 'F')%>%
   select(average_speed, distance, total_elevation_gain)
 #View(womenRun)
@@ -67,15 +57,15 @@ plot(womenRun$average_speed + 10 * (womenRun$total_elevation_gain/womenRun$dista
 #Summarize and prepare for modelling based on findings
 
 #Create incline variable
-rideAndRunStravaData$incline <- rideAndRunStravaData$total_elevation_gain / rideAndRunStravaData$distance
+cleanStravaData$incline <- cleanStravaData$total_elevation_gain / cleanStravaData$distance
 
 #Summary with just running and riding
-summaryStravaRandR <- group_by(rideAndRunStravaData, athlete.sex, type) %>%
+summaryStravaRandR <- group_by(cleanStravaData, athlete.sex, type) %>%
   summarise(averageSpeed = mean(average_speed), averageDistance = mean(distance), averageElevationGain = mean(total_elevation_gain), averageIncline = mean(incline), score = (averageSpeed * (averageDistance + (averageElevationGain * 3))), n = n())
 View(summaryStravaRandR)
 
 write.csv(summaryStravaRandR, 'Alkan_Holle_a3_q1_summaryData.csv')
-write.csv(rideAndRunStravaData, 'Alkan_Holle_a3_q1_rideAndRunDataToBeModeled.csv')
+write.csv(cleanStravaData, 'Alkan_Holle_a3_q1_rideAndRunDataToBeModeled.csv')
 
 # Problem 2: An interesting question of your choosing that must use at least one of the following: kudos count, athlete country, 
 # location country, and/or name.
@@ -85,6 +75,14 @@ summaryStrava <- group_by(cleanStravaData, athlete.sex, type) %>%
 View(summaryStrava)
 
 # Question: 
-  # What is the correlation between atheltes from different countries and how elevation gain effect the distance they travel when 
-  # walking, biking, or running? 
+# What is the correlation between atheltes from different countries and how elevation gain effect the distance they travel when 
+# walking, biking, or running? 
+
+cleanStravaData2 <- read.csv("ALKAN_HOLLE_INFO370_a3_cleanData_q2.csv")
+
+# For the eda for this data --> vizualize country vs elevation gain, country vs distance, 
+# find distributions for each and get the standard deveation for each
+# summary where we aggregate by country and type and plot each with different colors 
+
+
 
