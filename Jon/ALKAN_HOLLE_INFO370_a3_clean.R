@@ -12,7 +12,7 @@ typeCount <- group_by(cleanStravaData, type) %>%
 View(typeCount)
 
 # General filters that apply to both data sets 
-stravaData <- filter(stravaData, resource_state == 2, moving_time > 0, distance > 0, max_speed > 0, average_speed > 0, average_speed > max_speed, 
+stravaData <- filter(stravaData, resource_state == 2, moving_time > 0, distance > 0, max_speed > 0, average_speed > 0, average_speed < max_speed, 
                      type == "Ride" && max_speed < 33 && distance < 60000 || 
                      type == "Run" && max_speed < 9.8)
 
