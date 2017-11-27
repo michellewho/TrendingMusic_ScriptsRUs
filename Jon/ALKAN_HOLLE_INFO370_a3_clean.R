@@ -17,7 +17,8 @@ countryCount <- group_by(cleanStravaData, athlete.country) %>%
 View(countryCount)
 
 # General filters that apply to both data sets 
-stravaData <- filter(stravaData, resource_state == 2, moving_time > 0, distance > 0, max_speed > 0, average_speed > 0, average_speed < max_speed, 
+stravaData <- filter(stravaData, resource_state == 2, moving_time > 0, distance > 0, max_speed > 0, 
+                     average_speed > 0, average_speed < max_speed, total_elevation_gain < 8000, 
                      type == "Ride" && max_speed < 33 && distance < 600000 | 
                      type == "Run" && max_speed < 9.8 && distance < 300000,
                      type == "Ride" | type == "Run")
@@ -36,8 +37,5 @@ stravaData2 <- filter(stravaData,
                       athlete.country == 'United States')
 stravaData2 <- subset(stravaData, select = c(type, athlete.country, total_elevation_gain, distance))
 
-
 write.csv(stravaData1, file = "ALKAN_HOLLE_INFO370_a3_cleanData_q1.csv")
 write.csv(stravaData2, file = "ALKAN_HOLLE_INFO370_a3_cleanData_q2.csv")
-
-
