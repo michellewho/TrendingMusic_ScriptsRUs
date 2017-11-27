@@ -35,7 +35,7 @@ stravaData2 <- filter(stravaData,
                       athlete.country == 'France' |
                       athlete.country == 'United Kingdom' |
                       athlete.country == 'United States')
-stravaData2 <- subset(stravaData, select = c(type, athlete.country, total_elevation_gain, distance))
+stravaData2 <- subset(stravaData2, select = c(type, athlete.country, total_elevation_gain, distance))
 
 write.csv(stravaData1, file = "ALKAN_HOLLE_INFO370_a3_cleanData_q1.csv")
 write.csv(stravaData2, file = "ALKAN_HOLLE_INFO370_a3_cleanData_q2.csv")
