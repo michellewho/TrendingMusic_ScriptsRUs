@@ -4,7 +4,7 @@
 library(dplyr)
 setwd("~/Desktop/INFO370")
 cleanStravaData <- read.csv("ALKAN_HOLLE_INFO370_a3_cleanData_q1.csv")
-
+View(cleanStravaData)
 # Problem 1: Do men tend to exercise more intensely (taking into account both distance and speed) than women?
 
 # Isolate different subsets for exploratory plotting
@@ -48,10 +48,10 @@ plot(womenRide$average_speed, womenRide$distance + womenRide$total_elevation_gai
 plot(womenRun$average_speed, womenRun$distance + womenRun$total_elevation_gain)
 
 #Plots with speed + elevation gain/distance vs distance
-plot(menRide$average_speed + 10 * (menRide$total_elevation_gain/menRide$distance), menRide$distance)
-plot(menRun$average_speed + 10 * (menRun$total_elevation_gain/menRun$distance), menRun$distance)
-plot(womenRide$average_speed + 10 * (womenRide$total_elevation_gain/womenRide$distance), womenRide$distance)
-plot(womenRun$average_speed + 10 * (womenRun$total_elevation_gain/womenRun$distance), womenRun$distance)
+plot(menRide$average_speed + (10 * menRide$incline), menRide$distance)
+plot(menRun$average_speed +  (10 * menRun$incline), menRun$distance)
+plot(womenRide$average_speed + (10 * womenRide$incline), womenRide$distance)
+plot(womenRun$average_speed + (10 * womenRun$incline), womenRun$distance)
 
 #Getting densities
 #mens
@@ -80,23 +80,17 @@ plot(f_ride_spe_d)
 plot(f_run_dis_d)
 plot(f_run_spe_d)
 
-plot(m_ride_sco_d, xlab = "Distance * average speed)", col= 'blue', main = "Density of Distance * Speed", xlim= range(c(0, 2000000)), ylim = range(c(0, .000004)))
+plot(m_ride_sco_d, xlab = "Distance * average speed", col= 'blue', main = "Density of Distance * Speed", xlim= range(c(0, 1600000)), ylim = range(c(0, .0000045)))
 par(new=TRUE)
-plot(f_ride_sco_d, xlab = '', ylab = '', main = '', col='purple', axes = FALSE, xlim= range(c(0, 2000000)), ylim = range(c(0, .000004)))
+plot(f_ride_sco_d, xlab = '', ylab = '', main = '', col='purple', axes = FALSE, xlim= range(c(0, 1600000)), ylim = range(c(0, .0000045)))
 
-#Summarize and prepare for modelling based on findings
-
-#Create incline variable
-cleanStravaData$incline <- cleanStravaData$total_elevation_gain / cleanStravaData$distance
-cleanStravaData$score <- (cleanStravaData$average_speed + cleanStravaData$incline * 10) * cleanStravaData$distance
 
 #Summary with just running and riding
 summaryStravaRandR <- group_by(cleanStravaData, athlete.sex, type) %>%
-  summarise(averageSpeed = mean(average_speed), averageDistance = mean(distance), averageElevationGain = mean(total_elevation_gain), averageIncline = mean(incline), score = (averageSpeed + 10 * averageIncline) * averageDistance), n = n())
+  summarise(averageSpeed = mean(average_speed), averageDistance = mean(distance), averageElevationGain = mean(total_elevation_gain), averageIncline = mean(incline), averageScore = mean(score), n = n())
 View(summaryStravaRandR)
 
 write.csv(summaryStravaRandR, 'Alkan_Holle_a3_q1_summaryData.csv')
-write.csv(cleanStravaData, 'Alkan_Holle_a3_q1_rideAndRunDataToBeModeled.csv')
 
 # Problem 2: An interesting question of your choosing that must use at least one of the following: kudos count, athlete country, 
 # location country, and/or name.
@@ -106,9 +100,6 @@ write.csv(cleanStravaData, 'Alkan_Holle_a3_q1_rideAndRunDataToBeModeled.csv')
 # walking or biking? 
 
 cleanStravaData2 <- read.csv("ALKAN_HOLLE_INFO370_a3_cleanData_q2.csv")
-
-#Create incline variable
-cleanStravaData2$incline <- cleanStravaData2$total_elevation_gain / cleanStravaData2$distance
 
 # Isolate different workouts by workout for exploratory data analysis 
 rides <- cleanStravaData2 %>%
