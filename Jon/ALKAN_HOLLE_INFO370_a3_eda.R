@@ -53,15 +53,46 @@ plot(menRun$average_speed + 10 * (menRun$total_elevation_gain/menRun$distance), 
 plot(womenRide$average_speed + 10 * (womenRide$total_elevation_gain/womenRide$distance), womenRide$distance)
 plot(womenRun$average_speed + 10 * (womenRun$total_elevation_gain/womenRun$distance), womenRun$distance)
 
+#Getting densities
+#mens
+m_ride_dis_d <- density(menRide$distance)
+m_ride_spe_d <- density(menRide$average_speed)
+m_ride_sco_d <- density(menRide$average_speed * menRide$distance)
+m_run_dis_d <- density(menRun$distance)
+m_run_spe_d <- density(menRun$average_speed)
+m_run_sco_d <- density(menRun$average_speed * menRun$distance)
+#womens
+f_ride_dis_d <- density(womenRide$distance)
+f_ride_spe_d <- density(womenRide$average_speed)
+f_ride_sco_d <- density(womenRide$average_speed * womenRide$distance)
+f_run_dis_d <- density(womenRun$distance)
+f_run_spe_d <- density(womenRun$average_speed)
+f_run_sco_d <- density(womenRun$average_speed * womenRun$distance)
+
+
+#Plotting densities
+plot(m_ride_dis_d)
+plot(m_ride_spe_d)
+plot(m_run_dis_d)
+plot(m_run_spe_d)
+plot(f_ride_dis_d)
+plot(f_ride_spe_d)
+plot(f_run_dis_d)
+plot(f_run_spe_d)
+
+plot(m_ride_sco_d, xlab = "Distance * average speed)", col= 'blue', main = "Density of Distance * Speed", xlim= range(c(0, 2000000)), ylim = range(c(0, .000004)))
+par(new=TRUE)
+plot(f_ride_sco_d, xlab = '', ylab = '', main = '', col='purple', axes = FALSE, xlim= range(c(0, 2000000)), ylim = range(c(0, .000004)))
 
 #Summarize and prepare for modelling based on findings
 
 #Create incline variable
 cleanStravaData$incline <- cleanStravaData$total_elevation_gain / cleanStravaData$distance
+cleanStravaData$score <- (cleanStravaData$average_speed + cleanStravaData$incline * 10) * cleanStravaData$distance
 
 #Summary with just running and riding
 summaryStravaRandR <- group_by(cleanStravaData, athlete.sex, type) %>%
-  summarise(averageSpeed = mean(average_speed), averageDistance = mean(distance), averageElevationGain = mean(total_elevation_gain), averageIncline = mean(incline), score = (averageSpeed * (averageDistance + (averageElevationGain * 3))), n = n())
+  summarise(averageSpeed = mean(average_speed), averageDistance = mean(distance), averageElevationGain = mean(total_elevation_gain), averageIncline = mean(incline), score = (averageSpeed + 10 * averageIncline) * averageDistance), n = n())
 View(summaryStravaRandR)
 
 write.csv(summaryStravaRandR, 'Alkan_Holle_a3_q1_summaryData.csv')
@@ -70,19 +101,158 @@ write.csv(cleanStravaData, 'Alkan_Holle_a3_q1_rideAndRunDataToBeModeled.csv')
 # Problem 2: An interesting question of your choosing that must use at least one of the following: kudos count, athlete country, 
 # location country, and/or name.
 
-summaryStrava <- group_by(cleanStravaData, athlete.sex, type) %>%
-  summarise(averageSpeed = mean(average_speed), averageDistance = mean(distance), score = (averageSpeed * averageDistance), n = n())
-View(summaryStrava)
-
 # Question: 
 # What is the correlation between atheltes from different countries and how elevation gain effect the distance they travel when 
-# walking, biking, or running? 
+# walking or biking? 
 
 cleanStravaData2 <- read.csv("ALKAN_HOLLE_INFO370_a3_cleanData_q2.csv")
 
-# For the eda for this data --> vizualize country vs elevation gain, country vs distance, 
-# find distributions for each and get the standard deveation for each
-# summary where we aggregate by country and type and plot each with different colors 
+#Create incline variable
+cleanStravaData2$incline <- cleanStravaData2$total_elevation_gain / cleanStravaData2$distance
 
+# Isolate different workouts by workout for exploratory data analysis 
+rides <- cleanStravaData2 %>%
+  filter(type == 'Ride')%>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+
+runs <- cleanStravaData2 %>%
+  filter(type == 'Run')%>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+
+# Highlevel view of the data
+plot(cleanStravaData2$total_elevation_gain, cleanStravaData2$distance)
+
+plot(rides$athlete.country, rides$distance)
+plot(runs$athlete.country, runs$distance)
+
+plot(runs$athlete.country, runs$total_elevation_gain)
+plot(rides$athlete.country, rides$total_elevation_gain)
+
+hist(runs$total_elevation_gain)
+hist(rides$total_elevation_gain)
+plot(density(runs$total_elevation_gain))
+plot(density(rides$total_elevation_gain))
+
+hist(runs$distance)
+hist(rides$distance)
+plot(density(runs$distance))
+plot(density(rides$distance))
+
+# Per-country exploratory plots and subsets for statistical analysis
+
+# Austraila
+australiaRide <- rides %>%
+  filter(athlete.country == "Australia") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(australiaRide$total_elevation_gain, australiaRide$distance)
+plot(density(australiaRide$total_elevation_gain))
+plot(density(australiaRide$distance))
+write.csv(australiaRide, file = "australiaRide.csv")
+
+australiaRuns <- runs %>%
+  filter(athlete.country == "Australia") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(australiaRuns$total_elevation_gain, australiaRuns$distance)
+plot(density(australiaRuns$total_elevation_gain))
+plot(density(australiaRuns$distance))
+write.csv(australiaRuns, file = "australiaRuns.csv")
+
+
+# Brazil
+brazilRides <- rides %>%
+  filter(athlete.country == "Brazil") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(brazilRides$total_elevation_gain, brazilRides$distance)
+plot(density(brazilRide$total_elevation_gain))
+plot(density(brazilRide$distance))
+write.csv(brazilRides, file = "brazilRides.csv")
+
+brazilRuns <- runs %>%
+  filter(athlete.country == "Brazil") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(brazilRuns$total_elevation_gain, brazilRuns$distance)
+plot(density(brazilRuns$total_elevation_gain))
+plot(density(brazilRuns$distance))
+write.csv(brazilRuns, file = "brazilRuns.csv")
+
+
+# Canada
+canadaRides <- rides %>%
+  filter(athlete.country == "Canada") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(canadaRides$total_elevation_gain, canadaRides$distance)
+plot(density(canadaRide$total_elevation_gain))
+plot(density(canadaRide$distance))
+write.csv(canadaRides, file = "canadaRides.csv")
+
+canadaRuns <- runs %>%
+  filter(athlete.country == "Canada") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(canadaRuns$total_elevation_gain, canadaRuns$distance)
+plot(density(canadaRuns$total_elevation_gain))
+plot(density(canadaRuns$distance))
+write.csv(canadaRuns, file = "canadaRuns.csv")
+
+
+# France
+franceRides <- rides %>%
+  filter(athlete.country == "France") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(franceRides$total_elevation_gain, franceRides$distance)
+plot(density(franceRides$total_elevation_gain))
+plot(density(franceRides$distance))
+write.csv(franceRides, file = "franceRides.csv")
+
+franceRuns <- runs %>%
+  filter(athlete.country == "France") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(franceRuns$total_elevation_gain, franceRuns$distance)
+plot(density(franceRuns$total_elevation_gain))
+plot(density(franceRuns$distance))
+write.csv(franceRuns, file = "franceRuns.csv")
+
+
+# UK
+UKRides <- rides %>%
+  filter(athlete.country == "United Kindgom") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(UKRides$total_elevation_gain, UKRides$distance)
+plot(density(UKRides$total_elevation_gain))
+plot(density(UKRides$distance))
+write.csv(UKRides, file = "UKRides.csv")
+
+UKRuns <- runs %>%
+  filter(athlete.country == "United Kingdom") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(UKRuns$total_elevation_gain, UKRuns$distance)
+plot(density(UKRuns$total_elevation_gain))
+plot(density(UKRuns$distance))
+write.csv(UKRuns, file = "UKRuns.csv")
+
+
+# US
+USRides <- rides %>%
+  filter(athlete.country == "United States") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(USRides$total_elevation_gain, USRides$distance)
+plot(density(USRides$total_elevation_gain))
+plot(density(USRides$distance))
+write.csv(USRides, file = "USRides.csv")
+
+USRuns <- runs %>%
+  filter(athlete.country == "United States") %>%
+  select(athlete.country, type, total_elevation_gain, distance, incline)
+plot(USRuns$total_elevation_gain, USRuns$distance)
+plot(density(USRuns$total_elevation_gain))
+plot(density(USRuns$distance))
+write.csv(USRuns, file = "USRuns.csv")
+
+
+# Summary  
+summaryStravaQ2 <- group_by(cleanStravaData2, athlete.country, type) %>%
+  summarise(averageDistance = mean(distance), averageElevationGain = mean(total_elevation_gain), averageIncline = mean(incline), n = n())
+View(summaryStravaQ2)
+
+write.csv(summaryStravaQ2, file = "summaryStravaQ2.csv")
 
 
