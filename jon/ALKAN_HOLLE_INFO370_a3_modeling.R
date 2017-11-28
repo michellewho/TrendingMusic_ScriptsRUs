@@ -41,7 +41,6 @@ t.test(menRun$incline, womenRun$incline)
 #finally testing the intensity score we created for both running and cycling. These scores are independent within their fields and not to be directly compared
 t.test(menRun$score, womenRun$score)
 t.test(menRide$score, womenRide$score)
-t.test(menRide$average_speed*menRide$distance, womenRide$average_speed*womenRide$distance)
 
 
 #Question 2 
