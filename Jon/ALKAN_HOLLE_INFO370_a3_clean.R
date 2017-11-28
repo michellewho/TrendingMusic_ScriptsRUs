@@ -2,7 +2,6 @@
 # Data clean and organization file
 
 library(dplyr)
-setwd("~/Desktop/INFO370")
 stravaData <- read.csv("strava_activity.csv")
 
 # A look into the most popular workouts
@@ -22,11 +21,13 @@ stravaData <- filter(stravaData, resource_state == 2, moving_time > 0, distance 
                      type == "Run" && max_speed < 9.8 && distance < 300000,
                      type == "Ride" | type == "Run")
 
+# Add incline value to dataset 
 stravaData$incline <- stravaData$total_elevation_gain / stravaData$distance
 
 # Filter and select data that is relevant to questions 1
 stravaData1 <- filter(stravaData, is.null(athlete.sex) == FALSE, athlete.sex != "")
-stravaData1$score <- (stravaData$average_speed + stravaData$incline * 10) * stravaData$distance
+# Add score value only relevant to question 1
+stravaData1$score <- (stravaData1$average_speed + stravaData1$incline * 10) * stravaData1$distance
 stravaData1 <- subset(stravaData1, select = c(athlete.sex, type, average_speed, distance, total_elevation_gain, incline, score))
 
 # Filter and select data that is relevant to questions 2
