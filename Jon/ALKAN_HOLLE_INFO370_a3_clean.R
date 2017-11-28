@@ -5,7 +5,6 @@ library(dplyr)
 setwd("~/Desktop/INFO370")
 stravaData <- read.csv("strava_activity.csv")
 
-
 # A look into the most popular workouts
 typeCount <- group_by(cleanStravaData, type) %>%
   summarise(n = n())
@@ -18,7 +17,7 @@ View(countryCount)
 
 # General filters that apply to both data sets 
 stravaData <- filter(stravaData, resource_state == 2, moving_time > 0, distance > 0, max_speed > 0, 
-                     average_speed > 0, average_speed < max_speed, total_elevation_gain < 8000, 
+                     average_speed > 0, average_speed < max_speed, total_elevation_gain < 5000, 
                      type == "Ride" && max_speed < 33 && distance < 600000 | 
                      type == "Run" && max_speed < 9.8 && distance < 300000,
                      type == "Ride" | type == "Run")
