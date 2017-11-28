@@ -244,6 +244,6 @@ summaryStravaQ2 <- group_by(cleanStravaData2, athlete.country, type) %>%
   summarise(averageDistance = mean(distance), averageElevationGain = mean(total_elevation_gain), averageIncline = mean(incline), n = n())
 View(summaryStravaQ2)
 
-write.csv(summaryStravaQ2, file = "summaryStravaQ2.csv")
+write.csv(summaryStravaQ2, file = "Alkan_Holle_a3_q2_summaryData.csv")
 
 

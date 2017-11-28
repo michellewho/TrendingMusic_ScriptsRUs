@@ -1,10 +1,13 @@
 library(dplyr)
 
+fullDataQ1 <- read.csv("ALKAN_HOLLE_INFO370_a3_cleanData_q1.csv")
+fullDataQ2 <- read.csv("ALKAN_HOLLE_INFO370_a3_cleanData_q2.csv")
+
+summaryDataQ1 <- read.csv('Alkan_Holle_a3_q1_summaryData.csv')
+summaryDataQ2 <- read.csv('Alkan_Holle_a3_q2_summaryData.csv')
+
 
 # Question 1 modeling 
-summaryData <- read.csv('Alkan_Holle_a3_q1_summaryData.csv')
-fullData <- read.csv('Alkan_Holle_a3_q1_rideAndRunDataToBeModeled.csv')
-
 #Separate into 4 categories again to start doing independent t tests
 menRide <- fullData %>% 
   filter(type == 'Ride', athlete.sex == 'M')
@@ -40,10 +43,8 @@ t.test(menRun$score, womenRun$score)
 t.test(menRide$score, womenRide$score)
 t.test(menRide$average_speed*menRide$distance, womenRide$average_speed*womenRide$distance)
 
-# Binary prediction based on linear model
-runModel <- glm(formula= athlete.sex ~ type + score, data=fullData, family=binomial)
-summary(runModel)
-View(fullData)
+
+#Question 2 
 
 
 
