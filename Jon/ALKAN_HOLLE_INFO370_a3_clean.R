@@ -22,9 +22,12 @@ stravaData <- filter(stravaData, resource_state == 2, moving_time > 0, distance 
                      type == "Run" && max_speed < 9.8 && distance < 300000,
                      type == "Ride" | type == "Run")
 
+stravaData$incline <- stravaData$total_elevation_gain / stravaData$distance
+
 # Filter and select data that is relevant to questions 1
 stravaData1 <- filter(stravaData, is.null(athlete.sex) == FALSE, athlete.sex != "")
-stravaData1 <- subset(stravaData1, select = c(athlete.sex, type, average_speed, distance, total_elevation_gain))
+stravaData1$score <- (stravaData$average_speed + stravaData$incline * 10) * stravaData$distance
+stravaData1 <- subset(stravaData1, select = c(athlete.sex, type, average_speed, distance, total_elevation_gain, incline, score))
 
 # Filter and select data that is relevant to questions 2
 stravaData2 <- filter(stravaData,  
@@ -34,7 +37,7 @@ stravaData2 <- filter(stravaData,
                       athlete.country == 'France' |
                       athlete.country == 'United Kingdom' |
                       athlete.country == 'United States')
-stravaData2 <- subset(stravaData2, select = c(type, athlete.country, total_elevation_gain, distance))
+stravaData2 <- subset(stravaData2, select = c(type, athlete.country, total_elevation_gain, distance, incline))
 
 write.csv(stravaData1, file = "ALKAN_HOLLE_INFO370_a3_cleanData_q1.csv")
 write.csv(stravaData2, file = "ALKAN_HOLLE_INFO370_a3_cleanData_q2.csv")
